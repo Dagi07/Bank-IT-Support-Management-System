@@ -121,13 +121,11 @@ const updateOfficer = async (req, res) => {
         phoneno: updateOfficerData.phoneno,
         password: updateOfficerData.password,
       },
-      {
-        new: true,
-      }
+      { projection: { password: 0 }, new: true }
     );
 
     result &&
-      res.status(201).json({
+      res.status(202).json({
         status: "success",
         message: "IT Officer has been edited",
         data: result,
@@ -157,7 +155,7 @@ const passiveOfficer = async (req, res) => {
       await Officer.findByIdAndUpdate(
         req.params.id,
         { isActive: false },
-        { new: true }
+        { projection: { password: 0 }, new: true }
       ).then((result) =>
         res.status(202).json({
           status: "success",
@@ -169,7 +167,7 @@ const passiveOfficer = async (req, res) => {
       await Officer.findByIdAndUpdate(
         req.params.id,
         { isActive: true },
-        { new: true }
+        { projection: { password: 0 }, new: true }
       ).then((result) =>
         res.status(202).json({
           status: "success",
@@ -189,12 +187,13 @@ const passiveOfficer = async (req, res) => {
 
 const getInactiveOfficers = async (req, res) => {
   try {
-    const result = await Officer.find({ isActive: false });
+    const result = await Officer.find({ isActive: false }, "-password");
 
-    res.status(200).json({
-      status: "success",
-      data: result,
-    });
+    result &&
+      res.status(200).json({
+        status: "success",
+        data: result,
+      });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
