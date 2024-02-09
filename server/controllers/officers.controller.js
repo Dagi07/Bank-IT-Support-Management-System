@@ -47,13 +47,22 @@ const addOfficer = async (req, res) => {
       role: addOfficerData.role,
     });
 
+    const data = {
+      firstName: result.firstName,
+      lastName: result.lastName,
+      email: result.email,
+      phoneno: result.phoneno,
+      role: result.role,
+      _id: result._id,
+      createdAt: result.createdAt,
+    };
     result &&
       res.status(201).json({
         status: "success",
         message: `${result.role == "Manager" ? "IT Manager" : "IT Officer"} ${
           result.firstName
         } has been added`,
-        data: result,
+        data,
       });
   } catch (error) {
     console.log(error);
