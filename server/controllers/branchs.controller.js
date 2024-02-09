@@ -35,11 +35,20 @@ const addBranch = async (req, res) => {
       password: hashedPswd,
     });
 
+    const data = {
+      username: result.username,
+      city: result.city,
+      name: result.name,
+      phoneno: result.phoneno,
+      _id: result._id,
+      createdAt: result.createdAt,
+    };
+
     result &&
       res.status(201).json({
         status: "success",
         message: "Branch has been added",
-        data: result,
+        data,
       });
   } catch (error) {
     console.log(error);
@@ -97,13 +106,11 @@ const updateBranch = async (req, res) => {
         phoneno: updateBranchData.phoneno,
         password: updateBranchData.password,
       },
-      {
-        new: true,
-      }
+      { projection: { password: 0 }, new: true }
     );
 
     result &&
-      res.status(201).json({
+      res.status(202).json({
         status: "success",
         message: "Branch has been updated",
         data: result,
@@ -132,7 +139,7 @@ const passiveBranch = async (req, res) => {
       ? await Branch.findByIdAndUpdate(
           req.params.id,
           { isActive: false },
-          { new: true }
+          { projection: { password: 0 }, new: true }
         ).then((result) =>
           res.status(202).json({
             status: "success",
@@ -143,7 +150,7 @@ const passiveBranch = async (req, res) => {
       : await Branch.findByIdAndUpdate(
           req.params.id,
           { isActive: true },
-          { new: true }
+          { projection: { password: 0 }, new: true }
         ).then((result) =>
           res.status(202).json({
             status: "success",
@@ -162,7 +169,7 @@ const passiveBranch = async (req, res) => {
 
 const getInactiveBranchs = async (req, res) => {
   try {
-    const result = await Branch.find({ isActive: false });
+    const result = await Branch.find({ isActive: false }, "-password");
 
     res.status(200).json({
       status: "success",
