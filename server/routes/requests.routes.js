@@ -8,6 +8,7 @@ router
   .post(requestController.addRequest);
 router
   .route("/branch/request-support/:id")
+  .put(requestController.updateRequest)
   .delete(requestController.deleteRequest);
 
 module.exports = router;
