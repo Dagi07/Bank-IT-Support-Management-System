@@ -14,6 +14,9 @@ const requestsSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Officer",
     },
+    isDone: {
+      type: Boolean,
+    },
     isFixed: {
       type: Boolean,
     },
