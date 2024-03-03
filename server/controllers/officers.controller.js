@@ -1,5 +1,8 @@
 const Officer = require("../models/officersModel");
-const { validateAddOfficerBody } = require("../utils/validation");
+const {
+  validateAddOfficerBody,
+  validateUpdateOfficerBody,
+} = require("../utils/validation");
 const bcrypt = require("bcrypt");
 
 const addOfficer = async (req, res) => {
@@ -85,11 +88,11 @@ const getOfficers = async (req, res) => {
 const updateOfficer = async (req, res) => {
   try {
     const updateOfficerData = req.body;
-    validateAddOfficerBody(updateOfficerData);
-    if (validateAddOfficerBody(updateOfficerData)) {
+    validateUpdateOfficerBody(updateOfficerData);
+    if (validateUpdateOfficerBody(updateOfficerData)) {
       res.status(400).json({
         status: "failure",
-        message: validateAddOfficerBody(updateOfficerData),
+        message: validateUpdateOfficerBody(updateOfficerData),
       });
       return;
     }
@@ -112,24 +115,40 @@ const updateOfficer = async (req, res) => {
       });
     }
 
+    const updateObj = {
+      firstName: updateOfficerData.firstName,
+      lastName: updateOfficerData.lastName,
+      email: updateOfficerData.email,
+      phoneno: updateOfficerData.phoneno,
+      onLeave: updateOfficerData.onLeave,
+      isActive: updateOfficerData.isActive,
+    };
+
+    if (updateOfficerData.password) {
+      const salt = await bcrypt.genSalt(5);
+      const hashedPswd = await bcrypt.hash(updateOfficerData.password, salt);
+      updateObj.password = hashedPswd;
+    }
+
+    console.log(updateObj);
     const result = await Officer.findByIdAndUpdate(
       req.params.id,
-      {
-        firstName: updateOfficerData.firstName,
-        lastName: updateOfficerData.lastName,
-        email: updateOfficerData.email,
-        phoneno: updateOfficerData.phoneno,
-        password: updateOfficerData.password,
-      },
+      updateObj,
+
       { projection: { password: 0 }, new: true }
     );
 
-    result &&
-      res.status(202).json({
-        status: "success",
-        message: "IT Officer has been edited",
-        data: result,
-      });
+    result
+      ? res.status(202).json({
+          status: "success",
+          message: "IT Officer has been edited",
+          data: result,
+        })
+      : res.status(400).json({
+          status: "failure",
+          message: "Could not edit IT Officer",
+          data: result,
+        });
   } catch (error) {
     console.log(error);
     res.status(400).json({

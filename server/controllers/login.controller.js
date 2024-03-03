@@ -7,9 +7,10 @@ const jwt = require("jsonwebtoken");
 const secretJWTcode = process.env.SECRET_JWT_CODE;
 
 const login = async (req, res) => {
+  // console.log(req.body);
   try {
     const loginData = req.body;
-    loginData.email && (loginData.username = loginData.email);
+    loginData.username && (loginData.username = loginData.username);
     validateLogin(loginData);
     if (validateLogin(loginData)) {
       console.log(validateLogin(loginData));
@@ -18,10 +19,12 @@ const login = async (req, res) => {
       });
     }
 
-    const officerResult = await Officer.findOne({ email: loginData.email });
+    console.log(loginData.username);
+
+    const officerResult = await Officer.findOne({ email: loginData.username });
     const branchResult = await Branch.findOne({ username: loginData.username });
 
-    if (loginData.email && officerResult) {
+    if (loginData.username && officerResult) {
       const pswdMatch = await bcrypt.compare(
         loginData.password,
         officerResult.password
@@ -41,15 +44,17 @@ const login = async (req, res) => {
           data: token,
         });
       } else {
+        console.log("here 1");
         return res
           .status(401)
           .json({ status: "failure", message: `Invalid email or password` });
       }
-    } else if (!loginData.email && branchResult) {
+    } else if (loginData.username && branchResult) {
       const pswdMatch = await bcrypt.compare(
         loginData.password,
         branchResult.password
       );
+
       console.log(branchResult);
       const payload = {
         id: branchResult._id,
@@ -64,11 +69,13 @@ const login = async (req, res) => {
           data: token,
         });
       } else {
+        console.log("here 2");
         return res
           .status(401)
           .json({ status: "failure", message: `Invalid username or password` });
       }
     } else {
+      console.log("here 3");
       return res
         .status(401)
         .json({ status: "failure", message: `Invalid username or password` });

@@ -1,5 +1,8 @@
 const Branch = require("../models/branchsModel");
-const { validateAddBranchBody } = require("../utils/validation");
+const {
+  validateAddBranchBody,
+  validateUpdateBranchBody,
+} = require("../utils/validation");
 const bcrypt = require("bcrypt");
 
 const addBranch = async (req, res) => {
@@ -70,12 +73,13 @@ const getBranchs = async (req, res) => {
 
 const updateBranch = async (req, res) => {
   try {
+    console.log("### id ###", req.params.id);
     const updateBranchData = req.body;
-    validateAddBranchBody(updateBranchData);
-    if (validateAddBranchBody(updateBranchData)) {
+    validateUpdateBranchBody(updateBranchData);
+    if (validateUpdateBranchBody(updateBranchData)) {
       res.status(400).json({
         status: "failure",
-        message: validateAddBranchBody(updateBranchData),
+        message: validateUpdateBranchBody(updateBranchData),
       });
       return;
     }
@@ -87,27 +91,35 @@ const updateBranch = async (req, res) => {
       });
     }
 
-    const duplicateUsername = updateBranchData.username;
-    const duplicate = await Branch.findOne({
-      username: duplicateUsername,
-    });
-    if (duplicate && duplicate?._id != req.params.id) {
-      return res
-        .status(409)
-        .json({ status: "failure", message: "Username already taken" });
+    if (updateBranchData.username) {
+      const duplicateUsername = updateBranchData.username;
+      const duplicate = await Branch.findOne({
+        username: duplicateUsername,
+      });
+      if (duplicate && duplicate?._id != req.params.id) {
+        return res
+          .status(409)
+          .json({ status: "failure", message: "Username already taken" });
+      }
     }
 
-    const result = await Branch.findByIdAndUpdate(
-      req.params.id,
-      {
-        username: updateBranchData.username,
-        city: updateBranchData.city,
-        name: updateBranchData.name,
-        phoneno: updateBranchData.phoneno,
-        password: updateBranchData.password,
-      },
-      { projection: { password: 0 }, new: true }
-    );
+    const updateObject = {
+      username: updateBranchData.username,
+      city: updateBranchData.city,
+      name: updateBranchData.name,
+      phoneno: updateBranchData.phoneno,
+      isActive: updateBranchData.isActive,
+    };
+    if (updateBranchData.password) {
+      const salt = await bcrypt.genSalt(5);
+      const hashedPswd = await bcrypt.hash(updateBranchData.password, salt);
+      updateObject.password = hashedPswd;
+    }
+
+    const result = await Branch.findByIdAndUpdate(req.params.id, updateObject, {
+      projection: { password: 0 },
+      new: true,
+    });
 
     result &&
       res.status(202).json({
