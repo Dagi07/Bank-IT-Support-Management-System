@@ -1,4 +1,7 @@
+const connectDB = require("../config/dbConn");
 const mongoose = require("mongoose");
+
+connectDB();
 
 const officersSchema = new mongoose.Schema(
   {

@@ -24,6 +24,7 @@ const validateAddBranchBody = (addBranchBody) => {
     return "Please enter a valid phone number";
   }
 };
+
 const validateAddOfficerBody = (addOfficerBody) => {
   if (
     !addOfficerBody.firstName ||
@@ -54,9 +55,43 @@ const validateLogin = (loginData) => {
   }
 };
 
+const validateUpdateBranchBody = (updateBranchBody) => {
+  if (
+    updateBranchBody.username &&
+    !/^[a-zA-Z0-9_]+@[a-zA-Z0-9_]+$/gm.test(updateBranchBody.username)
+  ) {
+    return "Please enter a valid branch username";
+  }
+  if (
+    updateBranchBody.phoneno &&
+    (updateBranchBody.phoneno.length < 10 ||
+      updateBranchBody.phoneno.length > 15)
+  ) {
+    return "Please enter a valid phone number";
+  }
+};
+
+const validateUpdateOfficerBody = (updateOfficerBody) => {
+  if (
+    updateOfficerBody.email &&
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/gm.test(updateOfficerBody.email)
+  ) {
+    return "Please enter a valid Officer email";
+  }
+  if (
+    updateOfficerBody.phoneno &&
+    (updateOfficerBody.phoneno.length < 10 ||
+      updateOfficerBody.phoneno.length > 15)
+  ) {
+    return "Please enter a valid phone number";
+  }
+};
+
 module.exports = {
   validateAddReqBody,
   validateAddBranchBody,
   validateAddOfficerBody,
   validateLogin,
+  validateUpdateBranchBody,
+  validateUpdateOfficerBody,
 };
