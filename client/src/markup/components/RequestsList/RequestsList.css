@@ -1,0 +1,37 @@
+/* ::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(22, 20, 20, 0.1);
+} */
+
+/* html{
+  overflow: hidden;
+} */
+
+/* .days_list { */
+  /* position: fixed;
+  top: 0;
+  left: 0; */
+  /*padding-bottom: 0; */
+  /* height: 100%; */
+  /* flex: 1; Take up all available space */
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* overflow: hidden; Ensure that overflow doesn't affect the layout */
+/* } */
+
+/* .scrollbox { */
+  /* overflow-y: auto; Use overflow-y for vertical scrolling */
+  /* flex: 1; Take up all available vertical space */
+/* } */
+
+/* .scrollbox-inner,
+.scrollbox:hover {
+  visibility: visible;
+} */
+
+.request-section {
+  height: calc(100vh - 160px);
+}
