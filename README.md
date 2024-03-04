@@ -1,8 +1,8 @@
 # Bank-IT-Support-Management-System
 The Bank IT Support Management System is a comprehensive solution designed to streamline support request tracking for bank branches and facilitate efficient communication between IT managers and officers. This system is built with a user-friendly interface and utilizes modern technologies for both frontend and backend development.
 
-Features
-For Branches
+## Features
+### For Branches
 Request Support:
 Branches can submit support requests, specifying the nature of the issue they're facing.
 Track Requests:
@@ -11,14 +11,16 @@ View Assigned IT Officer:
 Identify the assigned IT Officer for each request.
 View Fixed Requests:
 Access a separate section to see already fixed requests.
-For IT Officers
+
+### For IT Officers
 Assigned Requests:
 IT Officers can view and manage the support requests assigned to them.
 Resolve Requests:
 Mark requests as resolved once the issue is fixed.
 Unmark Requests:
 Officers can unmark resolved requests within a 45-minute time frame.
-For IT Managers
+
+### For IT Managers
 Manage Requests:
 View and manage all support requests for every branch.
 Assign IT Officers to specific requests and change assignments within a 30-minute window.
@@ -27,7 +29,8 @@ Create, edit, and delete IT Officer accounts.
 Add additional IT Managers with a unique passcode.
 Branch Management:
 Add, edit, and delete branches.
-Technologies Used
+
+## Technologies Used
 Frontend:
 
 React Library
@@ -35,6 +38,7 @@ Tailwind CSS for styling
 Material Icons
 React-Bootstrap
 Redux for state management
+
 Backend:
 
 ExpressJS framework
@@ -70,7 +74,7 @@ npm start
 # In backend directory
 npm start
 Usage
-Access the application at http://localhost:3000 in your browser.
+Access the application at http://localhost:5173 in your browser.
 Login with your credentials (branch, IT Officer, or IT Manager) to start using the system.
 Contributing
 If you would like to contribute to the project, contact me.
