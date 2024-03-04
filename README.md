@@ -45,18 +45,21 @@ The Bank IT Support Management System is a comprehensive solution designed to st
 ### Installation
 1. Clone the repository.
 
-
 git clone https://github.com/Dagi07/Bank-IT-Support-Management-System.git
-2. Install dependencies for the frontend.
 
+
+2. Install dependencies for the frontend.
 
 cd bank-it-support-management-system/frontend
 npm install
-3. Install dependencies for the backend.
 
+
+3. Install dependencies for the backend.
 
 cd ../backend
 npm install
+
+
 4. Configure MongoDB connection in the backend. Update the .env file with your MongoDB URI.
 
 5. Start the frontend and backend servers.
@@ -66,7 +69,7 @@ npm install
 npm start
 
 # In backend directory
-npm start
+node app
 ### Usage
    - Access the application at http://localhost:5173 in your browser.
    - Login with your credentials (branch, IT Officer, or IT Manager) to start using the system.
